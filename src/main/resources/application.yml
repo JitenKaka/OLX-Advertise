@@ -1,0 +1,44 @@
+server:
+  port: 9000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /olx-Advertis-monitor  
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always      
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      CATEGORY_CIRCUTE_BREAKER:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        
+spring:
+   application:
+     name: Advertisement-service
+   datasource:
+      url: jdbc:mysql://localhost:3306/olx_advertisementdb
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: Ganeshbalaji@92
+   jpa:
+     hibernate.ddl-auto: update
+     properties:
+        hibernate:
+           dialect: org.hibernate.dialect.MySQL8Dialect      
+  
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true       
